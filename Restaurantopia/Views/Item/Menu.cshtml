@@ -2,82 +2,54 @@
 
 @{
     ViewData["Title"] = "Menu";
+    Layout = "_MenuLayout";
 }
 
-
+<!-- Optional: Create New Button -->
 <div class="row">
-
     <h1 class="col-md-6">Menu</h1>
-
     <p class="col-md-6">
         <a asp-action="Create" class="btn btn-success float-end">Create New</a>
     </p>
-
 </div>
-<div class="row" id="cards">
-    <partial name="Cards" model="Model" />
-    </div>
-@* <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemPrice)
-            </th>
-            
-            <th>
-                CategoryName
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemPrice)
-            </td>
-            
-            <td>
-                    @foreach (var cat in ViewBag.C_s)
-                    {
-                        if (cat.Id == item.CategoryId)
-                        {
-                            @cat.CategoryName
-                            break;
-                        }
-                    }
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@
+
+<!-- Dynamic Menu Card Section -->
+<div class="filters-content">
+    <div class="row grid">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-12 tab-wrap">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
+                        <div class="row no-gutters d-flex align-items-stretch">
+                            <div class="col-md-12 col-lg-6 d-flex align-self-stretch">
+                                <div class="menus d-sm-flex ftco-animate align-items-stretch">
+                                    <!-- Dynamic Background Image -->
+                                    <div class="menu-img img" style="background-image: url('/Images/breakfast-1.jpg');"></div>
+                                    <div class="text d-flex align-items-center">
+                                        <div>
+                                            <div class="d-flex">
+                                                <div class="one-half">
+                                                    <!-- Dynamic Item Title -->
+                                                    <h3>@item.ItemTitle</h3>
+                                                </div>
+                                                <div class="one-forth">
+                                                    <!-- Dynamic Item Price -->
+                                                    <span class="price">$@item.ItemPrice</span>
+                                                </div>
+                                            </div>
+                                            <!-- Dynamic Item Description -->
+                                            <p>@item.ItemDescription</p>
+                                            <!-- Order Now Button -->
+                                            <p><a href="/OrderDetails/Index" class="btn btn-primary">Order now</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End of row -->
+                    </div> <!-- End of tab-pane -->
+                </div> <!-- End of tab-content -->
+            </div> <!-- End of tab-wrap -->
+        }
+    </div> <!-- End of grid -->
+</div> <!-- End of filters-content -->
