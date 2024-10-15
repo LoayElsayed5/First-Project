@@ -2,53 +2,98 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "_Edit_OrderLayout";
     SelectList Cats = new SelectList(ViewBag.C_s, "Id", "CategoryName");
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<div class="heading-section ftco-animate mb-5 text-center">
+    <span class="subheading"> Menu </span>
+    <h2 class="mb-4">Edit Item</h2>
+</div>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ItemTitle" class="control-label"></label>
-                <input asp-for="ItemTitle" class="form-control" />
-                <span asp-validation-for="ItemTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemDescription" class="control-label"></label>
-                <input asp-for="ItemDescription" class="form-control" />
-                <span asp-validation-for="ItemDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemImage" class="control-label"></label>
-                <input asp-for="ItemImage" class="form-control" />
-                <span asp-validation-for="ItemImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemPrice" class="control-label"></label>
-                <input asp-for="ItemPrice" class="form-control" />
-                <span asp-validation-for="ItemPrice" class="text-danger"></span>
+
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ItemTitle" class="control-label">Name</label>
+                        <input asp-for="ItemTitle" class="form-control" placeholder="Enter item name" />
+                        <span asp-validation-for="ItemTitle" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ItemDescription" class="control-label">Description</label>
+                        <input asp-for="ItemDescription" class="form-control" placeholder="Item description" />
+                        <span asp-validation-for="ItemDescription" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ItemPrice" class="control-label">Price</label>
+                        <input asp-for="ItemPrice" class="form-control" placeholder="Price in $" />
+                        <span asp-validation-for="ItemPrice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label">Category</label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="Cats">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ItemImage" class="control-label">Image</label>
+                        <input asp-for="ItemImage" class="form-control" type="file" onchange="loadFile(event)" />
+                        <span asp-validation-for="ItemImage" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-2">
+                        <img src="/images/breakfast-1.jpg" alt="Item Image" width="200px" />
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="Cats">
-                    <option value="">-- Select Category --</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            <!-- Submit Button -->
+            <div class="form-group mt-4 text-center">
+                <button type="submit" class="btn btn-success mt-2">
+                    <i class="fas fa-save"></i> Save
+                </button>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+
+
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="ListOfItems">Back to List</a>
+<div class="text-center mt-3">
+    <a asp-action="Menu" class="btn btn-secondary mt-2">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@
+
+<script>
+    // Preview uploaded image
+    var loadFile = function (event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src); // free memory
+        }
+    };
+</script>

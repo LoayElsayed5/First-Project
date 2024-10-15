@@ -2,62 +2,79 @@
 
 @{
     ViewData["Title"] = "Order Index";
+    Layout = "_MyCart_Layout";
 }
 
 <h1>Order Index</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Id <!-- Display Order ID -->
-            </th>
-            <th>
-                Item Name<!-- Display Item Name -->
-            </th>
-            <th>
-                Total Price<!-- Display Total Price -->
-            </th>
-            <th>
-                Quantity <!-- Display Quantity -->
-            </th>
-            <th>
-                Date of Order <!-- Display Order Date -->
-            </th>
-            <th>
-                Image
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container">
+    <div class="row">
         @foreach (var order in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Id) <!-- Display Order ID -->
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Item.ItemTitle) <!-- Display Item Name -->
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Total) <!-- Display Total Price -->
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Quantity) <!-- Display Quantity -->
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Date) <!-- Display Order Date -->
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => order.Item.ItemImage) <!-- Display Order Date -->
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = order.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = order.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = order.Id })
-                </td>
-            </tr>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            Order ID: @Html.DisplayFor(modelItem => order.Id) <!-- Display Order ID -->
+                        </h5>
+                        <p class="card-text">
+                            Item Name: @Html.DisplayFor(modelItem => order.Item.ItemTitle) <!-- Display Item Name -->
+                        </p>
+                        <p class="card-text">
+                            Total Price: @Html.DisplayFor(modelItem => order.Total) <!-- Display Total Price -->
+                        </p>
+                        <p class="card-text">
+                            Quantity: @Html.DisplayFor(modelItem => order.Quantity) <!-- Display Quantity -->
+                        </p>
+                        <p class="card-text">
+                            Date of Order: @Html.DisplayFor(modelItem => order.Date) <!-- Display Order Date -->
+                        </p>
+                        <div class="text-center">
+                            <a href="@Url.Action("Details", "OrderDetails", new { id = order.Id })">
+                                <img src="~/images/breakfast-1.jpg" alt="Order Image" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                            </a>
+                        </div>
+                        <div class="mt-auto text-center">
+                            @Html.ActionLink("Edit", "Edit", new { id = order.Id }, new { @class = "btn btn-warning mt-2" }) |
+                            @Html.ActionLink("Details", "Details", new { id = order.Id }, new { @class = "btn btn-info mt-2" }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = order.Id }, new { @class = "btn btn-danger mt-2" })
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+
+        @if (Model.Count() % 3 != 0)
+        {
+            <div class="w-100"></div>
+        } <!-- Ensures alignment for grid system -->
+    </div>
+</div>
+
+<style>
+    /* Optional custom styles for buttons */
+    .btn-warning {
+        background-color: #ffc107; /* Bootstrap warning color */
+        border: none;
+    }
+
+    .btn-info {
+        background-color: #17a2b8; /* Bootstrap info color */
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Bootstrap danger color */
+        border: none;
+    }
+
+    /* Add hover effect */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .card:hover {
+            transform: scale(1.05); /* Scale up the card slightly */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+        }
+</style>

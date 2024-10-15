@@ -30,20 +30,28 @@ namespace Restaurantopia.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(string[] inculdes = null)
+        public async Task<IEnumerable<T>> GetAllAsync(string[] includes = null, Expression<Func<T, bool>> filter = null)
         {
-            IQueryable<T> query = _dbSet;
-            
-            if(inculdes != null)
+            IQueryable<T> query = _db.Set<T>();
+
+            // Apply includes if any
+            if (includes != null)
             {
-                foreach(var incul in inculdes)
+                foreach (var include in includes)
                 {
-                    query = query.Include(incul).AsSplitQuery();
+                    query = query.Include(include);
                 }
+            }
+
+            // Apply the filter if provided
+            if (filter != null)
+            {
+                query = query.Where(filter);
             }
 
             return await query.ToListAsync();
         }
+
 
 
 

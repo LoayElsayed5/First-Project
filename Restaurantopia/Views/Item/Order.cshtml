@@ -4,6 +4,7 @@
     ViewData["Title"] = "Order";
     Layout = "_OrderLayout";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
 <div class="heading-section ftco-animate mb-5 text-center">
     <span class="subheading">Order Your Item</span>
@@ -12,54 +13,48 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <h4>Item Details</h4>
-        <dl class="row">
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ItemTitle)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ItemTitle)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ItemDescription)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ItemDescription)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ItemPrice)
-            </dt>
-            <dd class="col-sm-8">
-                $@Html.DisplayFor(model => model.ItemPrice)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ItemImage)
-            </dt>
-            <dd class="col-sm-8">
-                <img src="@Model.ItemImage" alt="Item Image" width="200px" />
-            </dd>
-        </dl>
+        <!-- Card for Item Order -->
+        <div class="card h-100 shadow-sm">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="/images/breakfast-1.jpg" alt="Item Image" class="card-img" style="object-fit: cover; height: 100%;" onerror="this.onerror=null; this.src='~/Images/default-image.jpg';" />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.ItemTitle</h5>
+                        <p class="card-text">@Model.ItemDescription</p>
+                        <p class="card-text">
+                            <strong>Price:</strong> $@String.Format("{0:0.00}", Model.ItemPrice)
+                        </p>
+                       
 
-        <form asp-action="Order" method="post">
-            @Html.HiddenFor(model => model.Id) <!-- Include the item ID -->
-            @Html.HiddenFor(model => model.ItemPrice) <!-- Include the item price -->
-            @Html.HiddenFor(model => model.ItemTitle) <!-- Include the item title -->
-            @Html.HiddenFor(model => model.ItemDescription) <!-- Include the item description -->
-            @Html.HiddenFor(model => model.ItemImage) <!-- Include the item image -->
-            @Html.HiddenFor(model => model.CategoryId) <!-- Include the category ID -->
+                        <form asp-action="Order" method="post">
+                            @Html.HiddenFor(model => model.Id) <!-- Include the item ID -->
+                            @Html.HiddenFor(model => model.ItemPrice) <!-- Include the item price -->
+                            @Html.HiddenFor(model => model.ItemTitle) <!-- Include the item title -->
+                            @Html.HiddenFor(model => model.ItemDescription) <!-- Include the item description -->
+                            @Html.HiddenFor(model => model.ItemImage) <!-- Include the item image -->
+                            @Html.HiddenFor(model => model.CategoryId) <!-- Include the category ID -->
 
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label">Quantity</label>
-                <input asp-for="Quantity" class="form-control" placeholder="Enter quantity" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
+                            <div class="form-group">
+                                <label asp-for="Quantity" class="control-label">Quantity</label>
+                                <input asp-for="Quantity" class="form-control" placeholder="Enter quantity" />
+                                <span asp-validation-for="Quantity" class="text-danger"></span>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-group mt-4 text-center">
+                                <input type="submit" value="Order now" class="btn btn-success mt-2" />
+                                <a href="/Item/Menu" class="btn btn-secondary mt-2">
+                                    <i class="fas fa-arrow-left"></i> Back to List
+                                </a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
             </div>
-
-            <!-- Submit Button -->
-            <div class="form-group mt-4 text-center">
-                <input type="submit" value="Create Order" class="btn btn-primary" />
-                <a asp-action="Menu" class="btn btn-secondary">Back to List</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
