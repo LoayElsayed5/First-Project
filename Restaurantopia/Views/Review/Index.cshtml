@@ -1,0 +1,82 @@
+﻿@model Restaurantopia.Entities.Models.Review
+
+@{
+    ViewData["Title"] = "Review";
+    Layout = "_ReviewLayout";
+}
+
+<div class="heading-section ftco-animate mb-5 text-center">
+    <span class="subheading"> Review </span>
+    <h2 class="mb-4">Make Your Review</h2>
+</div>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form asp-action="Add" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Comment" class="control-label">Comment</label>
+                        <input asp-for="Comment" class="form-control" placeholder="Enter Your Comment" />
+                        <span asp-validation-for="Rate" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Rate" class="control-label">Rate</label>
+                        <select asp-for="Rate" class="form-control custom-dropdown nice-select wide">
+                            <option value="" disabled selected>Select Rating</option>
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Rate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Date" class="control-label">Date</label>
+                        <input asp-for="Date" class="form-control" placeholder="" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CustomerId" class="control-label">Customer</label>
+                        <input asp-for="CustomerId" class="form-control" placeholder="Enter CustomerId" />
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+
+                  
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group mt-4 text-center">
+
+                <input type="submit" value="Submit" class="btn btn-primary" />
+                <div class="text-center mt-3">
+                    <a asp-controller="Item" asp-action="Menu" class="btn btn-secondary">Back to Menu</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    // Preview uploaded image
+    var loadFile = function (event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+</script>
