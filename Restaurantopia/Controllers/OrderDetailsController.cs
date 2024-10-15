@@ -56,25 +56,56 @@ namespace Restaurantopia.Controllers
             }
         }
         // GET: OrderDetailsController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: OrderDetailsController/Edit/5
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var orderDetails = await _orderrepository.GetByIdAsync(id);
+            ViewBag.Orders = _Rep_Item.GetAllAsync();
+            if (orderDetails == null)
+            {
+                return NotFound();
+            }
+            return View(orderDetails);
         }
 
         // POST: OrderDetailsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, OrderDetails updatedOrderDetails)
         {
             try
             {
+                // Fetch the existing order details
+                var existingOrderDetails = await _orderrepository.GetByIdAsync(id);
+                if (existingOrderDetails == null)
+                {
+                    return NotFound();
+                }
+
+                // Manual validation for Quantity
+                if (updatedOrderDetails.Quantity <= 0)
+                {
+                    ModelState.AddModelError("Quantity", "Quantity must be greater than zero.");
+                    return View(updatedOrderDetails); // Return view with the error message
+                }
+
+                // Update only the quantity
+                existingOrderDetails.Quantity = updatedOrderDetails.Quantity;
+
+                // Save the changes
+                await _orderrepository.UpdateAsync(existingOrderDetails);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                // Optionally log the exception
+                ModelState.AddModelError("", "An error occurred while updating the order details. Please try again.");
+                return View(updatedOrderDetails); // Return view with the error message
             }
         }
+
+
 
         // GET: OrderDetailsController/Delete/5
         public async Task<ActionResult> Delete(int id)
@@ -91,7 +122,6 @@ namespace Restaurantopia.Controllers
             }
             return View(D_item);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
