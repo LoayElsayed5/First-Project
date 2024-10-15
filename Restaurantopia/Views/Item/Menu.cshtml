@@ -5,51 +5,90 @@
     Layout = "_MenuLayout";
 }
 
-<!-- Optional: Create New Button -->
-<div class="row">
-    <h1 class="col-md-6">Menu</h1>
-    <p class="col-md-6">
-        <a asp-action="Create" class="btn btn-success float-end">Create New</a>
-    </p>
-</div>
+<div class="container">
+    <!-- Optional: Create New Button -->
+    <div class="row mb-4">
+        <!-- Centered Menu Heading -->
+        <div class="row no-gutters justify-content-center mb-5 pb-2">
+            <div class="col-md-12 text-center heading-section ftco-animate">
+                <span class="subheading">Menu</span>
+                <h2 class="mb-4">Available Items</h2>
+            </div>
+        </div>
 
-<!-- Dynamic Menu Card Section -->
-<div class="filters-content">
-    <div class="row grid">
+        <!-- Create New Button -->
+        <div class="col-md-12 text-end">
+            <a asp-action="Create" class="btn btn-success mb-3">Create New</a>
+        </div>
+    </div>
+
+    <!-- Dynamic Menu Card Section -->
+    <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-12 tab-wrap">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
-                        <div class="row no-gutters d-flex align-items-stretch">
-                            <div class="col-md-12 col-lg-6 d-flex align-self-stretch">
-                                <div class="menus d-sm-flex ftco-animate align-items-stretch">
-                                    <!-- Dynamic Background Image -->
-                                    <div class="menu-img img" style="background-image: url('/Images/breakfast-1.jpg');"></div>
-                                    <div class="text d-flex align-items-center">
-                                        <div>
-                                            <div class="d-flex">
-                                                <div class="one-half">
-                                                    <!-- Dynamic Item Title -->
-                                                    <h3>@item.ItemTitle</h3>
-                                                </div>
-                                                <div class="one-forth">
-                                                    <!-- Dynamic Item Price -->
-                                                    <span class="price">$@item.ItemPrice</span>
-                                                </div>
-                                            </div>
-                                            <!-- Dynamic Item Description -->
-                                            <p>@item.ItemDescription</p>
-                                            <!-- Order Now Button -->
-                                            <p><a href="/OrderDetails/Index" class="btn btn-primary">Order now</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- End of row -->
-                    </div> <!-- End of tab-pane -->
-                </div> <!-- End of tab-content -->
-            </div> <!-- End of tab-wrap -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <!-- Clickable Dynamic Item Image -->
+                    <a href="/Item/Details/@item.Id" class="text-decoration-none">
+                        <img src="/Images/breakfast-1.jpg" class="card-img-top" alt="@item.ItemTitle" style="height: 200px; object-fit: cover;">
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between mb-3">
+                            <!-- Dynamic Item Title -->
+                            <h5 class="card-title">
+                                @item.ItemTitle (@foreach (var cat in ViewBag.C_s)
+                                {
+                                    if (cat.Id == item.CategoryId)
+                                    {
+                                        @cat.CategoryName
+                                        break;
+                                    }
+                                })
+                            </h5>
+                            <!-- Dynamic Item Price -->
+                            <h5 class="text-muted">
+                                <span>$@String.Format("{0:0.00}", item.ItemPrice)</span>
+                            </h5>
+                        </div>
+                        <!-- Dynamic Item Description -->
+                        <p class="card-text text-truncate">@item.ItemDescription</p>
+                        <!-- Action Buttons -->
+                        <div class="mt-auto">
+                            <a href="/Item/Order/@item.Id" class="btn btn-success mt-2">Order now</a>
+                            <a href="/Item/Edit/@item.Id" class="btn btn-warning mt-2">Edit</a>
+                            <a href="/Item/Delete/@item.Id" class="btn btn-danger mt-2">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </div> <!-- End of grid -->
-</div> <!-- End of filters-content -->
+
+        @if (Model.Count() % 3 != 0)
+        {
+            <div class="w-100"></div>
+        } <!-- Ensures alignment for grid system -->
+    </div>
+</div>
+
+<style>
+    /* Optional custom styles for buttons */
+    .btn-success {
+        background-color: green; /* Bootstrap success color */
+        border: none;
+    }
+
+    .btn-warning {
+        background-color: #ffc107; /* Bootstrap warning color */
+        border: none;
+    }
+
+    .btn-info {
+        background-color: #17a2b8; /* Bootstrap info color */
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Bootstrap danger color */
+        border: none;
+    }
+</style>

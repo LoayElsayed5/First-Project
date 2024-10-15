@@ -29,9 +29,9 @@ namespace Restaurantopia.Controllers
             IEnumerable<Item> Items;
             
             Items = await _Rep_Item.GetAllAsync(inculdes: new[] { "Category" });
- 
+            ViewBag.C_s = await _Rep_Category.GetAllAsync();
             //var Items = await _Rep_Item.GetAllAsync();
-          
+
             return View(Items);
 
         }
