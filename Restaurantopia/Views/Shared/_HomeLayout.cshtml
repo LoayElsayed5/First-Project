@@ -68,7 +68,11 @@
                             <i class="fas fa-shopping-cart"></i> My Cart
                         </a>
                     </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                </li>
                 </ul>
+                    <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
@@ -167,6 +171,7 @@
     </section>
 
     @RenderBody()
+    @RenderSection("Scripts", required: false)
     <section class="ftco-section ftco-wrap-about">
         <div class="container">
             <div class="row">

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Restaurantopia.InterFaces;
 using Restaurantopia.Models;
@@ -15,6 +16,9 @@ namespace Restaurantopia
             builder.Services.AddDbContext<MyDbContext>(Opt => Opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IUploadFile, UploadFile>();
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+		   .AddRoles<IdentityRole>()
+		   .AddEntityFrameworkStores<MyDbContext>();
             var app = builder.Build ();
 
 			
@@ -34,8 +38,8 @@ namespace Restaurantopia
 			app.MapControllerRoute (
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}" );
-
-			app.Run ();
+            app.UseEndpoints(endpoint => endpoint.MapRazorPages());
+            app.Run ();
 		}
 	}
 }
