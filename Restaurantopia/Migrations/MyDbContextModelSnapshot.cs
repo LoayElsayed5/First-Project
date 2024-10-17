@@ -251,7 +251,7 @@ namespace Restaurantopia.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Restaurantopia.Entities.Models.Customer", b =>
@@ -289,7 +289,7 @@ namespace Restaurantopia.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Restaurantopia.Entities.Models.Item", b =>
@@ -323,7 +323,7 @@ namespace Restaurantopia.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("Restaurantopia.Entities.Models.OrderDetails", b =>
@@ -355,7 +355,7 @@ namespace Restaurantopia.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("Restaurantopia.Entities.Models.Review", b =>
@@ -386,7 +386,7 @@ namespace Restaurantopia.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Review", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

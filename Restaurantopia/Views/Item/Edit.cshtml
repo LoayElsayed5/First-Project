@@ -1,22 +1,50 @@
 ﻿@model Restaurantopia.Entities.Models.Item
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Item";
     Layout = "_Edit_OrderLayout";
     SelectList Cats = new SelectList(ViewBag.C_s, "Id", "CategoryName");
 }
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
+<style>
+    /* Button styles with hover animations */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase button size on hover */
+    }
+
+    .btn-success i {
+        margin-right: 5px; /* Space between the icon and the text */
+    }
+
+    .btn-secondary i {
+        margin-right: 5px; /* Space between the icon and the text */
+    }
+</style>
+
 <div class="heading-section ftco-animate mb-5 text-center">
-    <span class="subheading"> Menu </span>
+    <span class="subheading">Menu</span>
     <h2 class="mb-4">Edit Item</h2>
 </div>
 
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Hidden input to pass the item ID -->
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Hidden field to hold the old image path -->
+            <input type="hidden" asp-for="ItemImage" />
 
             <div class="row">
                 <!-- Left Column -->
@@ -51,13 +79,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="ItemImage" class="control-label">Image</label>
-                        <input asp-for="ItemImage" class="form-control" type="file" onchange="loadFile(event)" />
-                        <span asp-validation-for="ItemImage" class="text-danger"></span>
+                        <label asp-for="ImageFile" class="control-label">Image</label>
+                        <input asp-for="ImageFile" class="form-control" type="file" onchange="loadFile(event)" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </div>
 
                     <div class="mt-2">
-                        <img src="/images/breakfast-1.jpg" alt="Item Image" width="200px" />
+                        <!-- Show current image -->
+                        <img id="output" src="@Url.Content(Model.ItemImage ?? "/images/default-placeholder.png")" alt="Item Image" width="200px" />
                     </div>
                 </div>
             </div>
@@ -66,26 +95,15 @@
             <div class="form-group mt-4 text-center">
                 <button type="submit" class="btn btn-success mt-2">
                     <i class="fas fa-save"></i> Save
-                </button>
+				</button>
+                <a asp-action="Menu" class="btn btn-secondary mt-2">
+					<i class="fas fa-arrow-left"></i> Back to List
+				</a>
             </div>
-
-
-
+			
         </form>
     </div>
 </div>
-
-<div class="text-center mt-3">
-    <a asp-action="Menu" class="btn btn-secondary mt-2">
-        <i class="fas fa-arrow-left"></i> Back to List
-    </a>
-</div>
-
-@* @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-} *@
 
 <script>
     // Preview uploaded image
@@ -93,7 +111,7 @@
         var output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
+            URL.revokeObjectURL(output.src); // Free memory
         }
     };
 </script>

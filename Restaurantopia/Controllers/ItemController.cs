@@ -6,112 +6,99 @@ using Restaurantopia.Repositories;
 
 namespace Restaurantopia.Controllers
 {
-    // ana loay elsayed
+    // Controller for managing Items (Loay Elsayed)
     public class ItemController : Controller
     {
-        private IGenericRepository<Item> _Rep_Item;
-        private IGenericRepository<Category> _Rep_Category;
-        private IGenericRepository<OrderDetails> _Rep_Order;
-        private IWebHostEnvironment _environment;
-        private IUploadFile _uploadFile;
+        private readonly IGenericRepository<Item> _Rep_Item;
+        private readonly IGenericRepository<Category> _Rep_Category;
+        private readonly IGenericRepository<OrderDetails> _Rep_Order;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IUploadFile _uploadFile;
 
-        public ItemController(IGenericRepository<Item> repository, IGenericRepository<Category> Rep, IWebHostEnvironment environment, IUploadFile uploadFile, IGenericRepository<OrderDetails> rep_Order)
+        public ItemController(IGenericRepository<Item> repository, IGenericRepository<Category> categoryRep,
+            IWebHostEnvironment environment, IUploadFile uploadFile, IGenericRepository<OrderDetails> rep_Order)
         {
             _Rep_Item = repository;
-            _Rep_Category = Rep;
+            _Rep_Category = categoryRep;
             _environment = environment;
             _uploadFile = uploadFile;
             _Rep_Order = rep_Order;
         }
 
+        // GET: Menu (Displays items with optional category and search filters)
         public async Task<ActionResult> Menu(int? categoryId, string searchQuery)
         {
-            // Get all items initially
             IEnumerable<Item> Items = await _Rep_Item.GetAllAsync(includes: new[] { "Category" });
 
-            // Save selected category ID in ViewBag
             ViewBag.SelectedCategoryId = categoryId;
-            ViewBag.SelectedCategoryName = null; // Initialize to null
+            ViewBag.SelectedCategoryName = null;
 
-            // Apply category filter if a categoryId is provided (i.e., not null or empty)
-            if (categoryId.HasValue && categoryId.Value != 0) // Adjust this line to check against a specific value for "All Categories"
+            if (categoryId.HasValue && categoryId.Value != 0)
             {
                 Items = Items.Where(item => item.CategoryId == categoryId.Value);
-
-                // Get the selected category name if filtering by a specific category
                 var selectedCategory = await _Rep_Category.GetByIdAsync(categoryId.Value);
-                ViewBag.SelectedCategoryName = selectedCategory?.CategoryName; // Store the selected category name
+                ViewBag.SelectedCategoryName = selectedCategory?.CategoryName;
             }
             else
             {
-                // When "All Categories" is selected or no category is selected, we don't filter items
-                ViewBag.SelectedCategoryName = "All Categories"; // Optional: you can set a default value
+                ViewBag.SelectedCategoryName = "All Categories";
             }
 
-            // Apply search filter if a search query is provided
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 Items = Items.Where(item => item.ItemTitle.ToLower().Contains(searchQuery.ToLower()));
                 ViewBag.SearchQuery = searchQuery;
-            }
-            else
-            {
-                ViewBag.SearchQuery = null;
             }
 
             ViewBag.C_s = await _Rep_Category.GetAllAsync();
             return View(Items);
         }
 
-
-
-
-
-
-
-
+        // GET: Details of an item
         public async Task<ActionResult> Details(int id)
         {
             Item item = await _Rep_Item.GetByIdAsync(id);
-            ViewBag.C_s = await _Rep_Category.GetAllAsync();
+            if (item == null)
+            {
+                return NotFound();
+            }
 
+            ViewBag.C_s = await _Rep_Category.GetAllAsync();
             return View(item);
         }
 
-
+        // GET: Create a new item
         public async Task<ActionResult> Create()
         {
-
             var categories = await _Rep_Category.GetAllAsync();
             var item = new Item() { categoryList = categories.ToList() };
             return View(item);
- 
         }
 
+        // POST: Create a new item
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Item item)
         {
             try
             {
-
                 if (item.ImageFile != null)
                 {
-                    string FilePath = await _uploadFile.UploadFileAsync("\\Images\\ItemImage\\",item.ImageFile);
-                    item.ItemImage = FilePath;
+                    string filePath = await _uploadFile.UploadFileAsync("\\Images\\ItemImage\\", item.ImageFile);
+                    item.ItemImage = filePath;
                 }
-                    await _Rep_Item.AddAsync(item);
-                    return RedirectToAction(nameof(Menu));
-                
+
+                await _Rep_Item.AddAsync(item);
+                return RedirectToAction(nameof(Menu));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(item);
-
             }
         }
 
+        // GET: Edit an item
         public async Task<ActionResult> Edit(int id)
         {
             ViewBag.C_s = await _Rep_Category.GetAllAsync();
@@ -126,85 +113,89 @@ namespace Restaurantopia.Controllers
             }
             return View(item);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Item item)
         {
             try
             {
+                if (item.ImageFile != null)
+                {
+                    // If a new image is uploaded, replace the old one
+                    string filePath = await _uploadFile.UploadFileAsync("\\Images\\ItemImage\\", item.ImageFile);
+                    item.ItemImage = filePath;
+                }
+
+                // If no new image is uploaded, the existing image path (item.ItemImage) remains the same
+
                 await _Rep_Item.UpdateAsync(item);
 
                 return RedirectToAction(nameof(Menu));
- 
- 
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                ViewBag.C_s = await _Rep_Category.GetAllAsync();
                 return View(item);
             }
         }
 
+
+        // GET: Delete confirmation view for an item
         public async Task<ActionResult> Delete(int id)
         {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-            ViewBag.C_s = await _Rep_Category.GetAllAsync();
-            Item D_item = await _Rep_Item.GetByIdAsync(id);
-            if (D_item == null)
-            {
-                return NotFound();
-            }
-            return View(D_item);
-        }
-
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, Item item)
-        {
-            try
-            {
-                if (id != item.Id)
-                {
-                    return BadRequest();
-                }
-
-                await _Rep_Item.DeleteAsync(id);
-  
-                return RedirectToAction(nameof(Menu));
- 
-
-            }
-            catch
-            {
-                return View(item);
-            }
-        }
-        public async Task<ActionResult> Order(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-            Item item = await _Rep_Item.GetByIdAsync(id);
+            var item = await _Rep_Item.GetByIdAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
+
+            ViewBag.C_s = await _Rep_Category.GetAllAsync();
             return View(item);
         }
 
+        // POST: Delete an item
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var item = await _Rep_Item.GetByIdAsync(id);
+                if (item == null)
+                {
+                    return NotFound();
+                }
 
+                await _Rep_Item.DeleteAsync(id);
+                return RedirectToAction(nameof(Menu));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var item = await _Rep_Item.GetByIdAsync(id);
+                return View(item);
+            }
+        }
 
+        // GET: Place an order for an item
+        public async Task<ActionResult> Order(int id)
+        {
+            var item = await _Rep_Item.GetByIdAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        // POST: Place an order
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Order(Item item)
         {
-            if (item.Quantity <= 0) // Validate Quantity
+            if (item.Quantity <= 0)
             {
                 ModelState.AddModelError("Quantity", "Quantity must be greater than zero.");
                 return View(item);
@@ -212,31 +203,25 @@ namespace Restaurantopia.Controllers
 
             try
             {
-                // Login 
-                int customerId = 1;
+                int customerId = 1; // Assuming a logged-in customer ID
 
-                // Create a new OrderDetails object
                 OrderDetails orderDetails = new OrderDetails
                 {
-                    ItemId = item.Id, // Use the selected item's ID
+                    ItemId = item.Id,
                     CustomerId = customerId,
                     Quantity = item.Quantity,
-                    Total = (int)item.ItemPrice * item.Quantity, // Calculate total based on quantity
+                    Total = (int)item.ItemPrice * item.Quantity,
                     Date = DateTime.Now
                 };
 
-                // Add the new orderDetails object to the database
                 await _Rep_Order.AddAsync(orderDetails);
-
-                // Redirect to the OrderDetails index after adding the item
                 return RedirectToAction("Index", "OrderDetails");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View(item);
             }
         }
-
-
     }
 }

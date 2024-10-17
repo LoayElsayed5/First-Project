@@ -1,16 +1,19 @@
 ﻿@model Restaurantopia.Entities.Models.Item
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Item";
     Layout = "_CreateLayout";
 }
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
 <div class="heading-section ftco-animate mb-5 text-center">
-    <span class="subheading"> Menu </span>
+    <span class="subheading">Menu</span>
     <h2 class="mb-4">Add New Item</h2>
 </div>
+
 <hr />
+
 <div class="row justify-content-center">
     <div class="col-md-8">
         <form asp-action="Create" enctype="multipart/form-data">
@@ -59,13 +62,13 @@
                     </div>
                 </div>
             </div>
-            <!-- Option 2: Icon integrated within the button -->
+
+            <!-- Submit Button -->
             <div class="form-group mt-4 text-center">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-plus-circle"></i> Create
                 </button>
             </div>
-
         </form>
     </div>
 </div>
@@ -76,16 +79,13 @@
     </a>
 </div>
 
-
 <script>
     // Preview uploaded image
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    
-    var loadFile = function (event) {
+    var loadFile = function(event) {
         var output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src) // free memory
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // Free memory
         }
     };
 </script>
