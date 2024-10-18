@@ -1,4 +1,5 @@
-﻿@model Restaurantopia.Entities.Models.Item
+﻿@using Restaurantopia.Entities.Models
+@model Restaurantopia.Entities.Models.Item
 
 @{
     ViewData["Title"] = "Order";
@@ -78,9 +79,12 @@
                             <!-- Submit Button -->
                             <!-- Submit Button -->
                             <div class="form-group mt-4 text-center">
-                                <button type="submit" class="btn btn-success mt-2">
-                                    Order now
+                                @if (User.IsInRole(RolesNames.roleAdmin))
+                                {
+                                    <button type="submit" class="btn btn-success mt-2">
+                                        Order now
                                 </button>
+                                }
                                 <a href="/Item/Menu" class="btn btn-secondary mt-2">
                                     Back to List
                                 </a>
