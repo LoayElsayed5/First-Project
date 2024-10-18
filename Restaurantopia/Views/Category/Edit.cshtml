@@ -2,31 +2,75 @@
 
 @{
     ViewData["Title"] = "Edit";
+        Layout = "_MenuLayout";
 }
 
-<h1>Edit</h1>
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<style>
+    /* Animation for buttons */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Add hover scale animation */
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase the button size */
+    }
+
+    /* Center the heading */
+    .heading-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Style for the form container */
+    .form-container {
+        background-color: #f9f9f9; /* Light grey background */
+        border: 1px solid #dee2e6; /* Grey border */
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="heading-section">
+        <h1>Edit Category</h1>
+    </div>
+    <h4>Category</h4>
+    <hr />
+
+    <div class="form-container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <!-- Center the form -->
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CategoryName" class="control-label"></label>
+                        <input asp-for="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+    </div>
+
+    <div class="action-links text-center">
+        <a asp-action="ListOfCategories" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
     </div>
 </div>
 
-<div>
-    <a asp-action="ListOfCategories">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

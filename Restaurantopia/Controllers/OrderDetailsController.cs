@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NuGet.Protocol.Core.Types;
@@ -7,7 +8,7 @@ using Restaurantopia.InterFaces;
 
 namespace Restaurantopia.Controllers
 {
-    public class OrderDetailsController : Controller
+	public class OrderDetailsController : Controller
     {
         // GET: OrderDetailsController
         private IGenericRepository<OrderDetails> _orderrepository;
@@ -23,15 +24,14 @@ namespace Restaurantopia.Controllers
         public async Task<ActionResult> Index()
         {
             var orderDetailsList = await _orderrepository.GetAllAsync();
-            ViewBag.Orders = _Rep_Item.GetAllAsync();
+            ViewBag.Orders = await _Rep_Item.GetAllAsync();  // Properly await the second async call
             return View(orderDetailsList);
         }
 
-        // GET: OrderDetailsController/Details/5
         public async Task<ActionResult> Details(int id)
         {
             var orderDetailsList = await _orderrepository.GetByIdAsync(id);
-            ViewBag.Orders = _Rep_Item.GetAllAsync();
+            ViewBag.Orders = await _Rep_Item.GetAllAsync();  // Properly await the second async call
             return View(orderDetailsList);
         }
 
@@ -60,7 +60,7 @@ namespace Restaurantopia.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var orderDetails = await _orderrepository.GetByIdAsync(id);
-            ViewBag.Orders = _Rep_Item.GetAllAsync();
+            ViewBag.Orders =await _Rep_Item.GetAllAsync();
             if (orderDetails == null)
             {
                 return NotFound();
@@ -114,8 +114,9 @@ namespace Restaurantopia.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Orders = await _Rep_Item.GetAllAsync();
+
             OrderDetails D_item = await _orderrepository.GetByIdAsync(id);
-            ViewBag.Orders = _Rep_Item.GetAllAsync();
             if (D_item == null)
             {
                 return NotFound();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -7,6 +8,7 @@ using Restaurantopia.Entities.Models;
 
 namespace Restaurantopia.Controllers
 {
+    [Authorize(Roles = RolesNames.roleAdmin)]
     public class RolesController : Controller
     {
 

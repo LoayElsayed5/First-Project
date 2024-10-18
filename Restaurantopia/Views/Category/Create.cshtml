@@ -2,30 +2,64 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "_MenuLayout";
 }
 
-<h1>Create A New Category</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<style>
+    /* Animation for buttons */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Add hover scale animation */
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase the button size */
+    }
+
+    /* Center the heading */
+    .heading-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="container">
+    <div class="heading-section">
+        <h1>Create A New Category</h1>
+        <hr />
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="CategoryName" class="control-label">Category Name</label>
+                    <input asp-for="CategoryName" class="form-control" placeholder="Enter category name" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4 text-center">
+                    <input type="submit" value="Create" class="btn btn-primary mt-2" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="ListOfCategories" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
     </div>
 </div>
 
-<div>
-    <a asp-action="ListOfCategories">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

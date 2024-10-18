@@ -2,28 +2,72 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "_MenuLayout";
 }
 
-<h1>Details</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }) |
-    <a asp-action="ListOfCategories">Back to List</a>
+<style>
+    /* Animation for buttons */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Add hover scale animation */
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase the button size */
+    }
+
+    /* Center the heading */
+    .heading-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Style for the details box */
+    .details-box {
+        background-color: #f9f9f9; /* Light grey background */
+        border: 1px solid #dee2e6; /* Grey border */
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    /* Style for the action links */
+    .action-links {
+        text-align: center; /* Center align action links */
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="heading-section">
+        <h1>Category Details</h1>
+    </div>
+
+    <div class="details-box">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CategoryName)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="action-links">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" }) |
+        <a asp-action="ListOfCategories" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
 </div>

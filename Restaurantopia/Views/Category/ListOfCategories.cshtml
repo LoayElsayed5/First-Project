@@ -2,38 +2,89 @@
 
 @{
     ViewData["Title"] = "Categories";
+    Layout = "_MenuLayout";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<style>
+    /* Animation for buttons */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Add hover scale animation */
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase the button size */
+    }
+
+    /* Add icons to buttons */
+    .btn-success::before {
+        content: "\f067"; /* Font Awesome plus icon */
+        font-family: FontAwesome;
+        margin-right: 8px;
+    }
+
+    .btn-warning::before {
+        content: "\f044"; /* Font Awesome pencil-alt icon */
+        font-family: FontAwesome;
+        margin-right: 8px;
+    }
+
+    .btn-info::before {
+        content: "\f05a"; /* Font Awesome info-circle icon */
+        font-family: FontAwesome;
+        margin-right: 8px;
+    }
+
+    .btn-danger::before {
+        content: "\f2ed"; /* Font Awesome trash-alt icon */
+        font-family: FontAwesome;
+        margin-right: 8px;
+    }
+</style>
+
+<div class="container">
+    <div class="row mb-4">
+        <!-- Categories Heading -->
+        <div class="heading-section ftco-animate mb-5 text-center">
+            <span class="subheading">Categories</span>
+            <h2 class="mb-4">Manage Categories</h2>
+        </div>
+
+        <!-- Create New Button -->
+        <div class="col-md-12 text-end mb-3">
+            <a asp-action="Create" class="btn btn-success">Create New Category</a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-hover shadow-sm">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Id)</th>
+                        <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-warning">Edit</a>
+                                <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info">Details</a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

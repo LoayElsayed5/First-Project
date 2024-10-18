@@ -2,31 +2,76 @@
 
 @{
     ViewData["Title"] = "Delete";
+    Layout = "_MenuLayout";
+
 }
 
-<h1>Delete</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-    </dl>
-    
+<style>
+    /* Animation for buttons */
+    .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    /* Add hover scale animation */
+    .btn:hover {
+        transform: scale(1.05); /* Slightly increase the button size */
+    }
+
+    /* Center the heading */
+    .heading-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Style for the confirmation box */
+    .confirmation-box {
+        background-color: #f8d7da; /* Light red background */
+        border: 1px solid #f5c6cb; /* Red border */
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .text-danger {
+        color: #721c24; /* Dark red color for error messages */
+    }
+</style>
+
+<div class="container">
+    <div class="heading-section">
+        <h1>Delete</h1>
+        <h3>Are you sure you want to delete this?</h3>
+    </div>
+
+    <div class="confirmation-box">
+        <h4>Category Details</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CategoryName)
+            </dd>
+        </dl>
+    </div>
+
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="ListOfCategories">Back to List</a>
+        <div class="text-center">
+            <input type="submit" value="Delete" class="btn btn-danger mt-2" />
+            <a asp-action="ListOfCategories" class="btn btn-secondary mt-2">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
     </form>
 </div>

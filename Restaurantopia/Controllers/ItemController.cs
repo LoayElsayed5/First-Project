@@ -204,7 +204,6 @@ namespace Restaurantopia.Controllers
             try
             {
                 int customerId = 1; // Assuming a logged-in customer ID
-
                 OrderDetails orderDetails = new OrderDetails
                 {
                     ItemId = item.Id,

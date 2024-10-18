@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurantopia.Entities.Models;
 using Restaurantopia.InterFaces;
@@ -7,6 +8,7 @@ namespace Restaurantopia.Controllers
 {
     //test
     // Ana Loay
+    [Authorize(Roles = RolesNames.roleAdmin)]
     public class CategoryController : Controller
     {
         private IGenericRepository<Category> _repository;

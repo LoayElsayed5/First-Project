@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Restaurantopia.Entities.Models
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>Feliciano - Free Bootstrap 4 Template by Colorlib</title>
@@ -59,7 +60,10 @@
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active"><a href="/Home/Index" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/Category/ListOfCategories" class="nav-link">Categories</a></li>
+					@if (User.IsInRole(RolesNames.roleAdmin))
+					{
+						<li class="nav-item"><a href="/Category/ListOfCategories" class="nav-link">Categories</a></li>
+					}
 					<li class="nav-item"><a href="/Item/Menu" class="nav-link">Menu</a></li>
 					<li class="nav-item"><a href="/About/Index" class="nav-link">About</a></li>
 					<li class="nav-item cta"><a href="/Review/Index" class="nav-link">Make Review</a></li>
