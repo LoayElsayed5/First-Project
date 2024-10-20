@@ -213,6 +213,7 @@ namespace Restaurantopia.Controllers
                     CustomerId = customerId,
                     Quantity = item.Quantity,
                     Total = (int)item.ItemPrice * item.Quantity,
+                    //PhoneNumber = phoneNumber,
                     Date = DateTime.Now
                 };
 
