@@ -35,28 +35,6 @@ namespace Restaurantopia.Controllers
             return View(orderDetailsList);
         }
 
-        // GET: OrderDetailsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OrderDetails item)
-        {
-            try
-            {
-                await _orderrepository.AddAsync(item);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        // GET: OrderDetailsController/Edit/5
-        // GET: OrderDetailsController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             var orderDetails = await _orderrepository.GetByIdAsync(id);
@@ -91,8 +69,7 @@ namespace Restaurantopia.Controllers
 
                 // Update only the quantity
                 existingOrderDetails.Quantity = updatedOrderDetails.Quantity;
-
-                // Save the changes
+                // Save the changesx    
                 await _orderrepository.UpdateAsync(existingOrderDetails);
 
                 return RedirectToAction(nameof(Index));
@@ -143,19 +120,6 @@ namespace Restaurantopia.Controllers
                 return View(order);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(int Id)
-        {
-            var i = await _orderrepository.GetByIdAsync(Id);
-            if (i == null)
-            {
-                return NotFound();
-            }
-            await _orderrepository.UpdateAsync(i);
-            return RedirectToAction("Index");
-        }
-
-
-
+      
     }
 }

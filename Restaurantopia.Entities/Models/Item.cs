@@ -38,6 +38,6 @@ namespace Restaurantopia.Entities.Models
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
         [NotMapped]
-        public List<Category>? categoryList { get; set; }
+        public List<Category> categoryList { get; set; }
     }
 }

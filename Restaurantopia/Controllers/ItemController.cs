@@ -28,6 +28,9 @@ namespace Restaurantopia.Controllers
         // GET: Menu (Displays items with optional category and search filters)
         public async Task<ActionResult> Menu(int? categoryId, string searchQuery)
         {
+            //includes: new[] { "Category" }: This tells the repository to include related Category data
+            //when retrieving Item objects (eager loading)
+            //. This is useful if you need to access category information associated with the items.
             IEnumerable<Item> Items = await _Rep_Item.GetAllAsync(includes: new[] { "Category" });
 
             ViewBag.SelectedCategoryId = categoryId;
@@ -43,7 +46,7 @@ namespace Restaurantopia.Controllers
             {
                 ViewBag.SelectedCategoryName = "All Categories";
             }
-
+            //Checks if a valid search query is provided (not null, empty, or just spaces).
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 Items = Items.Where(item => item.ItemTitle.ToLower().Contains(searchQuery.ToLower()));
@@ -203,7 +206,7 @@ namespace Restaurantopia.Controllers
 
             try
             {
-                int customerId = 1; // Assuming a logged-in customer ID
+                int customerId = 3; // Assuming a logged-in customer ID
                 OrderDetails orderDetails = new OrderDetails
                 {
                     ItemId = item.Id,
