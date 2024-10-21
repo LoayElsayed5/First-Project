@@ -19,10 +19,9 @@ namespace Restaurantopia.Entities.Models
 
 		[ForeignKey ( "Order" )]
 		public int OrderId { get; set; }
-		
 
 		[ForeignKey ("Customer")]
-		public int CustomerId { get; set; }
+		public int? CustomerId { get; set; }
 		public Customer customer { get; set; }
 
 	}

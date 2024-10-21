@@ -30,6 +30,10 @@
                             <p class="card-text">
                                 Date of Order: @Html.DisplayFor(modelItem => order.Date) <!-- Display Order Date -->
                             </p>
+                                <p class="card-text">
+        Phone Number: @Html.DisplayFor(modelItem => order.PhoneNumber) <!-- Display Phone Number -->
+    </p>
+
                             <div class="text-center">
                                 <a href="@Url.Action("Details", "OrderDetails", new { id = order.Id })">
                                     <!-- Dynamically display the order item's image -->

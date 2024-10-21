@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Restaurantopia.Entities.Models;
 using Restaurantopia.InterFaces;
@@ -14,15 +15,17 @@ namespace Restaurantopia.Controllers
         private readonly IGenericRepository<OrderDetails> _Rep_Order;
         private readonly IWebHostEnvironment _environment;
         private readonly IUploadFile _uploadFile;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public ItemController(IGenericRepository<Item> repository, IGenericRepository<Category> categoryRep,
-            IWebHostEnvironment environment, IUploadFile uploadFile, IGenericRepository<OrderDetails> rep_Order)
+            IWebHostEnvironment environment, IUploadFile uploadFile, IGenericRepository<OrderDetails> rep_Order, UserManager<IdentityUser> userManager)
         {
             _Rep_Item = repository;
             _Rep_Category = categoryRep;
             _environment = environment;
             _uploadFile = uploadFile;
             _Rep_Order = rep_Order;
+            _userManager = userManager;
         }
 
         // GET: Menu (Displays items with optional category and search filters)
@@ -203,17 +206,24 @@ namespace Restaurantopia.Controllers
                 ModelState.AddModelError("Quantity", "Quantity must be greater than zero.");
                 return View(item);
             }
-
+            
             try
-            {
-                int customerId = 3; // Assuming a logged-in customer ID
+            { // Get the currently signed-in user
+                var user = await _userManager.GetUserAsync(User);
+                // Retrieve the phone number from the user's profile
+                string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+                if (string.IsNullOrEmpty(phoneNumber))
+                {
+                    ModelState.AddModelError("", "Phone number is missing in the user profile.");
+                    return View(item);
+                }
                 OrderDetails orderDetails = new OrderDetails
                 {
                     ItemId = item.Id,
-                    CustomerId = customerId,
+                    //CustomerId = customerId,
                     Quantity = item.Quantity,
                     Total = (int)item.ItemPrice * item.Quantity,
-                    //PhoneNumber = phoneNumber,
+                    PhoneNumber = phoneNumber,
                     Date = DateTime.Now
                 };
 

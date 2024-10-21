@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Restaurantopia.Entities.Models
-{
+{   
     public class OrderDetails
     {
         public int Id { get; set; }
